@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Убедитесь, что вы импортируете useNavigate
+import { useNavigate } from 'react-router-dom';
 import styles from './CardSelectionGrid.module.css';
-import cards from '../cards.js'; // Импортируйте ваш массив с картами
+import cards from '../cards.js';
 
 const CardSelectionGrid = () => {
 	const [cardKeys, setCardKeys] = useState([]);
 	const [flippedCards, setFlippedCards] = useState(Array(9).fill(false));
-	const navigate = useNavigate(); // Инициализируйте navigate
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		// Генерация 9 случайных чисел от 1 до 78
@@ -19,10 +19,21 @@ const CardSelectionGrid = () => {
 		newFlippedCards[index] = !newFlippedCards[index]; // Переключаем состояние переворота карты
 		setFlippedCards(newFlippedCards);
 
-		// Переход на компонент CardDescription через 1 секунду после переворота
+		// Задержка для анимации переворота
 		setTimeout(() => {
 			if (newFlippedCards[index]) {
-				navigate(`/card/${cardKeys[index]}`); // Переход с передачей id карты
+				// Выполняем запрос на сервер с id карты
+				const cardId = cardKeys[index];
+				fetch(`https://example.com/cards/${cardId}`) // Замените на актуальный URL для JSON
+					.then(response => response.json())
+					.then(data => {
+						console.log(data); // Проверяем, что получили данные
+						// Переход на компонент CardDescription с id карты
+						navigate(`/card/${cardId}`);
+					})
+					.catch(error => {
+						console.error('Ошибка загрузки описания карты:', error);
+					});
 			}
 		}, 1000); // Время задержки, чтобы дать возможность увидеть переворот
 	};
