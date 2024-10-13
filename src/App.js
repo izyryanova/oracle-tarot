@@ -17,6 +17,7 @@ const App = () => {
 				<Routes location={location}>
 					<Route path="/" element={<HomePage />} />
 					<Route path="/select-card" element={<CardSelectionGrid />} />
+					<Route path="/card/:id" element={<CardDescription />} />
 					<Route path="/card-detail" element={<CardDescription />} />
 					<Route path="/store-menu" element={<StoreMenu />} />
 					<Route path="/daily-spread" element={<DailyLayout />} />
